@@ -28,7 +28,7 @@ app.use(express.json()); // ana thi beackend maje data aavse e object na form ma
 app.use(express.urlencoded({ extended: true })); // form na data ne object ma convert kare
 app.use(cookieParser());
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: ['https://job-hunt-bay.vercel.app','http://localhost:5173'],
     credentials: true
 }
 app.use(cors(corsOptions));

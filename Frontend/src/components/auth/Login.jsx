@@ -46,7 +46,7 @@ const Login = () => {
         // toast.success(res.data.message) // backend ma darek ma message rakhyo che e aavse niche right side bottom ma
         toast.success(res.data.message, {
           position: 'top-center', // Set desired position
-          duration: 4000, // Duration of the toast
+          duration: 3000, // Duration of the toast
         });
       }
     } catch (error) {
@@ -70,18 +70,18 @@ const Login = () => {
           <h1 className='font-bold text-xl mb-5'> Login </h1>
 
           <div className='my-2'>
-            <Label className='font-bold'>Email</Label>
+            <Label className='font-bold'>Email<span className='text-red-500'>*</span></Label>
             <Input
               type="email"
               name="email"
               value={input.email}
               onChange={changeEventHandler}
-              placeholder="patel@gmail.com"
+              placeholder="abc@gmail.com"
             />
           </div>
 
           <div className='my-2'>
-            <Label className='font-bold'>Password</Label>
+            <Label className='font-bold'>Password<span className='text-red-500'>*</span></Label>
             <Input
               type="password"
               name="password"

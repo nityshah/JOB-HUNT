@@ -24,7 +24,7 @@ const Signup = () => {
   });
 
   const navigate = useNavigate();
-  const { loading,user } = useSelector(store => store.auth);
+  const { loading, user } = useSelector(store => store.auth);
   const dispatch = useDispatch();
   const changeEventHandler = (e) => {
     setinput({ ...input, [e.target.name]: e.target.value }); // ahiya name a badle fullname,email,password etc. avtu jase ane user e je nakhyu hase ena thi update thai jse
@@ -34,8 +34,17 @@ const Signup = () => {
     setinput({ ...input, file: e.target.files?.[0] }); // ahiya list pass thati hase etle agar file upload kari hase to pehli file aai jase, ane nahi upload kari hoy to error ahi aape
   }
 
+  const validatePhoneNumber = (phone) => {
+    const phoneRegex = /^\d{10}$/; // Only 10 digits
+    return phoneRegex.test(phone);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault(); // ana thi page reload nahi thay 
+    if (!validatePhoneNumber(input.phoneNumber)) {
+      toast.error("Phone number must be exactly 10 digits and contain only numbers.");
+      return;
+    }
     const formData = new FormData();
     formData.append("fullname", input.fullname); // aa bar nu fullname che e backend ma mode na name sathe match thavu joie
     formData.append("email", input.email);
@@ -48,13 +57,13 @@ const Signup = () => {
     try {
       // .post()-> aa method 3 arguments le che URL, data,config
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`,formData,{
-        headers:{
-          "Content-Type":"multipart/form-data"
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
         },
-        withCredentials:true
+        withCredentials: true
       });
-      if(res.data.success) // res.data thi backend ma je model banyo che e aakho aavse ane ema success true rakhyu tu e ave to niche nu execute karvau
+      if (res.data.success) // res.data thi backend ma je model banyo che e aakho aavse ane ema success true rakhyu tu e ave to niche nu execute karvau
       {
         navigate("/login"); // success thay to login page uper jata revanu 
         toast.success(res.data.message) // backend ma darek ma message rakhyo che e aavse niche right side bottom ma
@@ -66,11 +75,11 @@ const Signup = () => {
       dispatch(setLoading(false))
     }
   }
-useEffect(() => {
-    if(user) {
+  useEffect(() => {
+    if (user) {
       navigate("/");
     }
-  },[])
+  }, [])
   return (
     <div>
       <Navbar />
@@ -78,37 +87,38 @@ useEffect(() => {
         <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
           <h1 className='font-bold text-xl mb-5'>Sign Up</h1>
           <div className='my-2'>
-            <Label className='font-bold'>Full Name</Label>
+            <Label className='font-bold'>Full Name<span className='text-red-500'>*</span></Label>
             <Input
               type="text"
               name="fullname"
               value={input.fullname} // aa value che e e.target.value ama store thase ane e.target.name -> fullname=value evu thase 
-                                    // ahiya name ma je fullname che input.. karine je fullname che eni sathe match thavu joie 
+              // ahiya name ma je fullname che input.. karine je fullname che eni sathe match thavu joie 
               onChange={changeEventHandler}
-              placeholder="patel"
+              placeholder="xyz"
             />
           </div>
           <div className='my-2'>
-            <Label className='font-bold'>Email</Label>
+            <Label className='font-bold'>Email<span className='text-red-500'>*</span></Label>
             <Input
               type="email"
               name="email"
               value={input.email}
               onChange={changeEventHandler}
-              placeholder="patel@gmail.com"
+              placeholder="abc@gmail.com"
             />
           </div>
           <div className='my-2'>
-            <Label className='font-bold'>Phone Number</Label>
+            <Label className='font-bold'>Phone Number<span className='text-red-500'>*</span></Label>
             <Input
               type="text"
               name="phoneNumber"
               value={input.phoneNumber}
               onChange={changeEventHandler}
-              placeholder="+91 8456208401"
+              placeholder="+91 999999999"
+              maxLength={10}
             />
             <div className='my-2'>
-              <Label className='font-bold'>Password</Label>
+              <Label className='font-bold'>Password<span className='text-red-500'>*</span></Label>
               <Input
                 type="password"
                 name="password"
@@ -144,7 +154,7 @@ useEffect(() => {
                 </div>
               </RadioGroup>
               <div className='flex items-center gap-2'>
-                <Label>Profile:</Label>
+                <Label>Profile:<span className='text-red-500'>*</span></Label>
                 <Input
                   accept="image/*"
                   type="file"
@@ -156,8 +166,8 @@ useEffect(() => {
           </div>
 
           {
-            loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin'/> Please Wait</Button> :
-            <Button type="submit" style={{ borderRadius: '0.375rem' }} variant="outline" className="bg-black w-full my-4 text-white border-gray-300">SignUp</Button>
+            loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please Wait</Button> :
+              <Button type="submit" style={{ borderRadius: '0.375rem' }} variant="outline" className="bg-black w-full my-4 text-white border-gray-300">SignUp</Button>
           }
 
           <span className='text-sm'>Already have an account? <Link to="/login" className='text-blue-600'>Login</Link></span>

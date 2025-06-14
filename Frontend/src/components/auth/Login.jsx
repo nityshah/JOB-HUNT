@@ -70,7 +70,7 @@ const Login = () => {
           <h1 className='font-bold text-xl mb-5'> Login </h1>
 
           <div className='my-2'>
-            <Label className='font-bold'>Email<span className='text-red-500'>*</span></Label>
+            <Label className='font-bold'>Email<span className='text-red-600'>*</span></Label>
             <Input
               type="email"
               name="email"

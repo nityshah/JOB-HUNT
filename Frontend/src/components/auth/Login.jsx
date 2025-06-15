@@ -81,7 +81,7 @@ const Login = () => {
           </div>
 
           <div className='my-2'>
-            <Label className='font-bold'>Password<span className='text-red-500'>*</span></Label>
+            <Label className='font-bold'>Password<span className='text-red-600'>*</span></Label>
             <Input
               type="password"
               name="password"
